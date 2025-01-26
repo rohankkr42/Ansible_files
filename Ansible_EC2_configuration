@@ -1,0 +1,21 @@
+---
+- name: Launch EC2 instance on AWS
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Launch a new EC2 instance
+      ec2:
+        key_name: my-key
+        instance_type: t2.micro
+        image: ami-12345678
+        region: us-west-2
+        group: webserver
+        count: 1
+        instance_tags:
+          Name: "WebServer"
+      register: ec2_instance
+
+    - name: Output EC2 instance IP
+      debug:
+        var: ec2_instance.instances[0].public_ip
+

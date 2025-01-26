@@ -1,0 +1,11 @@
+---
+- name: Set correct permissions on a directory
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure correct permissions on /var/www directory
+      file:
+        path: /var/www
+        mode: '0755'
+        recurse: yes
+

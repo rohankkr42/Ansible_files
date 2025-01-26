@@ -1,0 +1,13 @@
+---
+- name: Ensure critical services are running
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check if nginx is running
+      service_facts:
+
+    - name: Fail if nginx is not running
+      fail:
+        msg: "Nginx service is down!"
+      when: ansible_facts.services['nginx'].state != 'running'
+

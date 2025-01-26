@@ -1,0 +1,21 @@
+---
+- name: Deploy application code from Git
+  hosts: web_servers
+  become: yes
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone the repository
+      git:
+        repo: 'https://github.com/your-org/your-repo.git'
+        dest: /var/www/your-app
+        version: master
+
+    - name: Restart web server to apply changes
+      service:
+        name: apache2
+        state: restarted
+

@@ -1,0 +1,8 @@
+---
+- name: Backup important directories
+  hosts: all
+  become: yes
+  tasks:
+    - name: Backup /etc directory to /tmp/backup/etc
+      command: cp -r /etc /tmp/backup/etc
+

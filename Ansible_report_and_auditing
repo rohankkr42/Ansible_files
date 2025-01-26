@@ -1,0 +1,13 @@
+---
+- name: Collect system information for reporting
+  hosts: all
+  become: yes
+  tasks:
+    - name: Gather system facts
+      setup:
+
+    - name: Save system facts to a file
+      copy:
+        content: "{{ ansible_facts | to_nice_json }}"
+        dest: "/tmp/system_report_{{ inventory_hostname }}.json"
+
