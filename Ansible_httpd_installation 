@@ -1,0 +1,27 @@
+---
+- name: Install and start httpd service
+  hosts: all
+  become: yes  # Run tasks as sudo/root
+  tasks:
+    - name: Install httpd package
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Ensure httpd service is enabled and running
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Create a custom index.html (Optional)
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+            <head><title>Welcome</title></head>
+            <body><h1>HTTPD is Running!</h1></body>
+          </html>
+        owner: apache
+        group: apache
+        mode: '0644'
