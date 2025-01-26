@@ -1,0 +1,19 @@
+---
+- name: Add a new user with sudo privileges
+  hosts: all
+  become: yes
+  vars:
+    user_name: "john_doe"
+  tasks:
+    - name: Create a user
+      user:
+        name: "{{ user_name }}" #The name parameter specifies the username to create. In this case, the value of user_name (which was defined earlier as "john_doe") will be used
+        state: present #This indicates that the user should be created if it doesn't already exist. If the user exists, no action is taken. Setting this to absent would delete the user.
+        shell: /bin/bash
+        groups: sudo
+
+    - name: Set password for the user
+      user:
+        name: "{{ user_name }}"
+        password: "$6$rounds=656000$Tbd9EXM0YWUds2wF$JqZr.NYht1ZT.xhrl.2kBD9zRj5Z3YjcMrf23PzCj.JI96OsydDgj8G5SfxOnos6VoI2ZdZsdTTh3E.RobEds1"
+
