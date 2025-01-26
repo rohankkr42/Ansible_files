@@ -1,0 +1,26 @@
+---
+- name: Apply security updates
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600 #Keep the cache valid for an hour to avoid unnecessary updates
+
+    - name: Upgrade all package to latest version 
+      apt:
+        upgrade: dist
+        state: latest
+        force: yes # Force upgrade even if packages are held back
+
+    - name: Apply security updates(Ubuntu spefic)
+      apt:
+        upgrade: dist
+        state: latest
+        only_upgrade: yes
+        package: "{{item}}"
+      with_items: "{{ ansible_facts.package | selectattr('security', 'defined') | map(attribute='name') | list }}"
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+
